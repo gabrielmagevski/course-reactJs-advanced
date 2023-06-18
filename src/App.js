@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-undef */
+import { Component } from "react";
+import { Posts } from "./Components/Posts/index";
+import { loadPosts } from "./utils/load-posts";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    posts: [],
+  };
+
+  async componentDidMount() {
+    await this.loadPosts();
+  }
+
+  loadPosts = async () => {
+    const postsAndPhotos = await loadPosts();
+    this.setState({ posts: postsAndPhotos });
+  };
+
+  render() {
+    const { posts } = this.state;
+
+    return (
+      <section className="container">
+        <Posts posts={posts} />
+      </section>
+    );
+  }
 }
 
 export default App;
